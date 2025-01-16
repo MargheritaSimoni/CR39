@@ -1,0 +1,6 @@
+*.so
+build/*
+*Zone.Identifier
+.idea/*
+src/.idea/*
+include/.idea/*

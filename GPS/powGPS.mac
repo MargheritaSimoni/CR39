@@ -1,0 +1,13 @@
+
+
+# it's initialized inside main to install NCrystal
+#/run/initialize
+
+/gps/particle neutron
+/gps/ene/type Pow
+/gps/ene/min 500. eV
+/gps/ene/max 500. MeV
+/gps/ene/alpha -0.9
+
+/run/printProgress 1000
+/run/beamOn 100000

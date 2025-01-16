@@ -1,0 +1,98 @@
+#!/bin/bash
+
+# Define the energy values
+energy_values=("14.1") #MeV ("1" "100")
+macro="monoGPS.mac"
+
+#Define list of materials
+materialsNC=("PMMA_NC" "PP_NC" "PVC_NC" "PS_NC")
+materialsG4=("PMMA_G4" "PP_G4" "PVC_G4" "PS_G4")
+
+# Define materials
+PMMA_NC="auto polymer = G4Material::GetMaterial(\"NC_PLEXIGLASS\");"
+PVC_NC="auto polymer = G4Material::GetMaterial(\"NC_POLYVINYL_CHLORIDE\");"
+PP_NC="auto polymer = G4Material::GetMaterial(\"NC_POLYPROPYLENE\");"
+PS_NC="auto polymer = G4Material::GetMaterial(\"NC_POLYSTYRENE\");"
+
+PMMA_G4="auto polymer = G4Material::GetMaterial(\"G4_PLEXIGLASS\");"
+PVC_G4="auto polymer = G4Material::GetMaterial(\"G4_POLYVINYL_CHLORIDE\");"
+PP_G4="auto polymer = G4Material::GetMaterial(\"G4_POLYPROPYLENE\");"
+PS_G4="auto polymer = G4Material::GetMaterial(\"G4_POLYSTYRENE\");"
+
+
+#thickness forr each material
+###SPESSORI DA RICONTROLLARE
+PMMA_NC_Z="G4double dimPolymerZ=8.0*cm;" #8.31143667603391*cm;"
+PVC_NC_Z="G4double dimPolymerZ=10.8*cm;" #9.948218285057854*cm;" #26.918708295992083*cm;"
+PP_NC_Z="G4double dimPolymerZ=6.6*cm;" #6.5136148565823399*cm;"
+PS_NC_Z="G4double dimPolymerZ=9.9*cm;" #9.862078297989857 *cm;"
+
+
+PMMA_G4_Z="G4double dimPolymerZ=8.0*cm;" #8.31143667603391*cm;"
+PVC_G4_Z="G4double dimPolymerZ=10.8*cm;" #9.948218285057854*cm;" #26.918708295992083*cm;"
+PP_G4_Z="G4double dimPolymerZ=6.6*cm;" #6.5136148565823399*cm;"
+PS_G4_Z="G4double dimPolymerZ=9.9*cm;" #9.862078297989857 *cm;"
+
+
+PMMA_G4_foil="G4double foilCdZ =  8.0*cm;"
+PVC_G4_foil="G4double foilCdZ = 10.8*cm;"
+PP_G4_foil="G4double foilCdZ = 6.6*cm;"
+PS_G4_foil="G4double foilCdZ = 9.9*cm;"
+
+PMMA_NC_foil="G4double foilCdZ =  8.0*cm;"
+PVC_NC_foil="G4double foilCdZ = 10.8*cm;"
+PP_NC_foil="G4double foilCdZ = 6.6*cm;"
+PS_NC_foil="G4double foilCdZ = 9.9*cm;"
+
+
+# Define DetectorConstruction path
+DC="../src/B4cDetectorConstruction.cc"
+
+
+# Get the 9th line of run1.mac to Get number of neutrons
+neutrons=$(sed -n '5p' ${macro})
+
+# Write the 9th line of run1.mac to OUT.txt
+echo "Running with: $neutrons neutrons" > OUT.txt
+echo "make OUT:" > make_output.txt
+for material in "${materialsNC[@]}"; do
+        polymer=${!material}
+        Z=${material}_Z
+        thickness=${!Z}
+        foilz=${material}_foil
+	sed -i "146s/.*/${polymer}/g" "$DC"
+	sed -i "125s/.*/${thickness}/g" "$DC"
+  sed -i "130s/.*/${!foilz}/g" "$DC"
+	echo "Running with ${material} material" | tee -a OUT.txt
+	make >> make_output.txt 
+
+	# Loop over each energy value
+	for energy in "${energy_values[@]}"; do
+	    # Change energy
+	    sed -i "5s/.*/\/gps\/energy ${energy} MeV/" ${macro}
+	    echo "Running with energy ${energy} MeV" | tee -a OUT.txt
+	    { time ./exampleB4c -m ${macro} | grep -A 15 "events were processed"; } 2>&1 | tee -a OUT.txt
+	    mv B4.root "B4_${energy}MeV_${material}.root"
+	done
+done
+
+for material in "${materialsG4[@]}"; do
+        polymer=${!material}
+        Z=${material}_Z
+        thickness=${!Z}
+        foilz=${material}_foil
+	sed -i "146s/.*/${polymer}/g" "$DC"
+	sed -i "125s/.*/${thickness}/g" "$DC"
+  sed -i "130s/.*/${!foilz}/g" "$DC"
+	echo "Running with ${material} material" | tee -a OUT.txt
+	make >> make_output.txt 
+
+	# Loop over each energy value
+	for energy in "${energy_values[@]}"; do
+	    # Change energy
+	    sed -i "5s/.*/\/gps\/energy ${energy} MeV/" ${macro}
+	    echo "Running with energy ${energy} MeV" | tee -a OUT.txt
+	    { time ./exampleB4c -m ${macro} | grep -A 15 "events were processed";  } 2>&1 | tee -a OUT.txt
+	    mv B4.root "B4_${energy}MeV_${material}.root"
+	done
+done

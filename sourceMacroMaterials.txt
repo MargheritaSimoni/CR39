@@ -1,0 +1,5 @@
+
+ncrystal_hfg2ncmat --formula C12H18O7 --spec 8xCH2+2xCHali  --density 1.15 --title CR39 -o CR39.ncmat
+
+
+#hnb è il monomero allyl diglycol carbonate (ADC)ttps://www.chembk.com/en/chem/CR-39
