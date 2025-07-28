@@ -24,10 +24,10 @@ B4cCalorHit::B4cCalorHit()
    boundaryVector(-1000,-1000,-1000),
    boundaryEnergy(-999),
    gammaEnergies(),
-   secondaryAtomicNumber(100,-1),
-   secondaryAtomicMass(100,-1),
-   secondaryTrackLengths(100,-1),
-   secondaryDepositedEnergy(100,0)
+   secondaryAtomicNumber(200,-1),
+   secondaryAtomicMass(200,-1),
+   secondaryTrackLengths(200,-1),
+   secondaryDepositedEnergy(200,0)
 
 {}
 

@@ -110,7 +110,7 @@ G4VPhysicalVolume* B4cDetectorConstruction::DefineVolumes()
 {
     // Geometry parameters
     // world
-    G4double maxStep = 0.5*um; // max step dimension for charged particles
+    G4double maxStep = 2*nm; // max step dimension for charged particles
 
     G4double worldSizeXY = 50. *cm;
     G4double worldSizeZ  = 50. *cm;
@@ -145,7 +145,7 @@ G4double foilCdZ = 9.9*cm;
     fNofLayers = 1;
 
     // Get materials
-    auto polymer = G4Material::GetMaterial("NC_CR39");
+    auto polymer = G4Material::GetMaterial("G4_CR39");
     auto worldMaterial = G4Material::GetMaterial("Galactic");
     //auto cadmium = G4Material::GetMaterial("G4_Cd");
 

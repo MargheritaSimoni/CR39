@@ -148,11 +148,13 @@ G4bool B4cCalorimeterSD::ProcessHits(G4Step* step,
                 G4int atomicMass = step->GetTrack()->GetDefinition()->GetAtomicMass();
                 G4double secondaryDepositedEnergy = step->GetTotalEnergyDeposit();
                 G4double secondaryTrackLength = step->GetTrack()->GetTrackLength();
-           // G4int stepNumber = step->GetTrack()->GetCurrentStepNumber();
-           // G4cout <<stepNumber << "ID" <<trackID<< " SECONDARY in SD Atomic number: " << atomicNumber << " GetSecondaryTrackLengths "<< G4BestUnit(secondaryTrackLength, "Length") << " GetSecondaryDepositedEnergy " << G4BestUnit(secondaryDepositedEnergy, "Energy") << G4endl;
-            G4cout << step->GetTrack()->GetTrackID() << " SECONDARY"
-                   << step->GetTrack()->GetDefinition()->GetParticleName() << " secEnergy "
-                   << G4BestUnit(secondaryDepositedEnergy, "Energy") << G4endl;
+                // particle name
+                G4String particleName = step->GetTrack()->GetDefinition()->GetParticleName();
+            //G4int stepNumber = step->GetTrack()->GetCurrentStepNumber();
+            //G4cout <<stepNumber << "ID" <<trackID<< " SECONDARY in SD Atomic number: " << atomicNumber << particleName << " GetSecondaryTrackLengths "<< G4BestUnit(secondaryTrackLength, "Length") << " GetSecondaryDepositedEnergy " << G4BestUnit(secondaryDepositedEnergy, "Energy") << G4endl;
+            //G4cout << step->GetTrack()->GetTrackID() << " SECONDARY"
+              //     << step->GetTrack()->GetDefinition()->GetParticleName() << " secEnergy "
+                //   << G4BestUnit(secondaryDepositedEnergy, "Energy") << G4endl;
                 hit->AddSecondaryTrackInfo(trackID, atomicNumber, atomicMass, secondaryDepositedEnergy, secondaryTrackLength);
                 hitTotal->AddSecondaryTrackInfo(trackID, atomicNumber, atomicMass, secondaryDepositedEnergy, secondaryTrackLength);
 

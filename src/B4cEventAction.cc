@@ -195,18 +195,138 @@ void B4cEventAction::EndOfEventAction(const G4Event* event)
             if (sampleHit->GetSecondaryAtomicNumber()[i] == -1) {
                 break;
             }
-            else {analysisManager->FillH1(5, sampleHit->GetSecondaryTrackLengths()[i]);
-                analysisManager->FillH2(3, sampleHit->GetSecondaryTrackLengths()[i],
-                                        sampleHit->GetSecondaryAtomicMass()[i]);
-                analysisManager->FillH2(4, sampleHit->GetSecondaryDepositedEnergy()[i],
-                                        sampleHit->GetSecondaryTrackLengths()[i]);
-                analysisManager->FillH2(5, sampleHit->GetSecondaryDepositedEnergy()[i],
-                                        sampleHit->GetSecondaryAtomicMass()[i]);
-                G4cout << "SECONDARY in EA with i= " << i << "Atomic number: "
-                       << sampleHit->GetSecondaryAtomicNumber()[i] << " GetSecondaryTrackLengths "
-                       << G4BestUnit(sampleHit->GetSecondaryTrackLengths()[i], "Length")
-                       << " GetSecondaryDepositedEnergy "
-                       << G4BestUnit(sampleHit->GetSecondaryDepositedEnergy()[i], "Energy") << G4endl;
+            else {
+                if(sampleHit->GetSecondaryTrackLengths()[i]>1*CLHEP::nm && sampleHit->GetSecondaryAtomicNumber()[i] != 0){
+                    analysisManager->FillH1(5, sampleHit->GetSecondaryTrackLengths()[i]);
+                    analysisManager->FillH2(3, sampleHit->GetSecondaryTrackLengths()[i],
+                                            sampleHit->GetSecondaryAtomicMass()[i]);
+                    analysisManager->FillH2(4, sampleHit->GetSecondaryDepositedEnergy()[i],
+                                            sampleHit->GetSecondaryTrackLengths()[i]);
+                    analysisManager->FillH2(5, sampleHit->GetSecondaryDepositedEnergy()[i],
+                                            sampleHit->GetSecondaryAtomicMass()[i]);
+                    analysisManager->FillH2(18, sampleHit->GetSecondaryAtomicNumber()[i],
+                                            sampleHit->GetSecondaryAtomicMass()[i]);
+                    if(sampleHit->GetSecondaryTrackLengths()[i]>0.5*CLHEP::um) {
+                        analysisManager->FillH1(6, sampleHit->GetSecondaryTrackLengths()[i]);
+                        if(sampleHit->GetSecondaryTrackLengths()[i]>1*CLHEP::um) {
+                            analysisManager->FillH1(7, sampleHit->GetSecondaryTrackLengths()[i]);
+                        }
+                    }
+
+
+                    /*G4cout << "SECONDARY in EA with i= " << i << "Atomic number: "
+                           << sampleHit->GetSecondaryAtomicNumber()[i] << " GetSecondaryTrackLengths "
+                           << G4BestUnit(sampleHit->GetSecondaryTrackLengths()[i], "Length")
+                           << " GetSecondaryDepositedEnergy "
+                           << G4BestUnit(sampleHit->GetSecondaryDepositedEnergy()[i], "Energy") << G4endl;*/
+                }
+               // G4cout << "SECONDARY in EA with i= " << i << "Atomic number: "
+                 //      << sampleHit->GetSecondaryAtomicNumber()[i] << " GetSecondaryTrackLengths "
+                   //    << G4BestUnit(sampleHit->GetSecondaryTrackLengths()[i], "Length")
+                     //  << " GetSecondaryDepositedEnergy "
+                       //<< G4BestUnit(sampleHit->GetSecondaryDepositedEnergy()[i], "Energy") << G4endl;
+
+                       if (sampleHit->GetSecondaryAtomicNumber()[i] == 1) {
+                           analysisManager->FillH2(6, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                           if(sampleHit->GetSecondaryTrackLengths()[i]>1*CLHEP::nm){
+                               analysisManager->FillH2(9, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                               if(sampleHit->GetSecondaryTrackLengths()[i]>0.1*CLHEP::um){
+                                   analysisManager->FillH2(12, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                                   if(sampleHit->GetSecondaryTrackLengths()[i]>0.5*CLHEP::um){
+                                       analysisManager->FillH2(15, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                                   }
+                               }
+                           }
+                       }
+                       else if (sampleHit->GetSecondaryAtomicNumber()[i] == 6) {
+                           analysisManager->FillH2(7, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                           if(sampleHit->GetSecondaryTrackLengths()[i]>1*CLHEP::nm){
+                               analysisManager->FillH2(10, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                                 if(sampleHit->GetSecondaryTrackLengths()[i]>0.1*CLHEP::um){
+                                      analysisManager->FillH2(13, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                                     if(sampleHit->GetSecondaryTrackLengths()[i]>0.5*CLHEP::um){
+                                         analysisManager->FillH2(16, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                                     }
+                                 }
+                           }
+                       }
+                       else if (sampleHit->GetSecondaryAtomicNumber()[i] == 8) {
+                           analysisManager->FillH2(8, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                            if(sampleHit->GetSecondaryTrackLengths()[i]>1*CLHEP::nm){
+                                 analysisManager->FillH2(11, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                                    if(sampleHit->GetSecondaryTrackLengths()[i]>0.1*CLHEP::um){
+                                        analysisManager->FillH2(14, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                                        if(sampleHit->GetSecondaryTrackLengths()[i]>0.5*CLHEP::um){
+                                            analysisManager->FillH2(17, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                                        }
+                                    }
+                            }
+                       }
+
+                       else if (sampleHit->GetSecondaryAtomicNumber()[i] == 2) {
+                           //analysisManager->FillH2(8, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                           if(sampleHit->GetSecondaryTrackLengths()[i]>1*CLHEP::nm){
+                               analysisManager->FillH2(19, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                               /*if(sampleHit->GetSecondaryTrackLengths()[i]>0.1*CLHEP::um){
+                                   analysisManager->FillH2(14, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                                   if(sampleHit->GetSecondaryTrackLengths()[i]>0.5*CLHEP::um){
+                                       analysisManager->FillH2(17, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                                   }
+                               }*/
+                           }
+                       }
+
+                       else if (sampleHit->GetSecondaryAtomicNumber()[i] == 4) {
+                           //analysisManager->FillH2(8, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                           if(sampleHit->GetSecondaryTrackLengths()[i]>1*CLHEP::nm){
+                               analysisManager->FillH2(20, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                               /*if(sampleHit->GetSecondaryTrackLengths()[i]>0.1*CLHEP::um){
+                                   analysisManager->FillH2(14, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                                   if(sampleHit->GetSecondaryTrackLengths()[i]>0.5*CLHEP::um){
+                                       analysisManager->FillH2(17, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                                   }
+                               }*/
+                           }
+                       }
+
+                       else if (sampleHit->GetSecondaryAtomicNumber()[i] == 5) {
+                           //analysisManager->FillH2(8, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                           if(sampleHit->GetSecondaryTrackLengths()[i]>1*CLHEP::nm){
+                               analysisManager->FillH2(21, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                               /*if(sampleHit->GetSecondaryTrackLengths()[i]>0.1*CLHEP::um){
+                                   analysisManager->FillH2(14, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                                   if(sampleHit->GetSecondaryTrackLengths()[i]>0.5*CLHEP::um){
+                                       analysisManager->FillH2(17, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                                   }
+                               }*/
+                           }
+                       }
+
+                       else if (sampleHit->GetSecondaryAtomicNumber()[i] == 3) {
+                           //analysisManager->FillH2(8, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                           if(sampleHit->GetSecondaryTrackLengths()[i]>1*CLHEP::nm){
+                               analysisManager->FillH2(22, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                               /*if(sampleHit->GetSecondaryTrackLengths()[i]>0.1*CLHEP::um){
+                                   analysisManager->FillH2(14, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                                   if(sampleHit->GetSecondaryTrackLengths()[i]>0.5*CLHEP::um){
+                                       analysisManager->FillH2(17, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                                   }
+                               }*/
+                           }
+                       }
+
+                       else if (sampleHit->GetSecondaryAtomicNumber()[i] == 7) {
+                           //analysisManager->FillH2(8, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                           if(sampleHit->GetSecondaryTrackLengths()[i]>1*CLHEP::nm){
+                               analysisManager->FillH2(23, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                               /*if(sampleHit->GetSecondaryTrackLengths()[i]>0.1*CLHEP::um){
+                                   analysisManager->FillH2(14, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                                   if(sampleHit->GetSecondaryTrackLengths()[i]>0.5*CLHEP::um){
+                                       analysisManager->FillH2(17, sampleHit->GetSecondaryDepositedEnergy()[i],sampleHit->GetSecondaryTrackLengths()[i]);
+                                   }
+                               }*/
+                           }
+                       }
             }
         }
     }
@@ -221,7 +341,7 @@ void B4cEventAction::EndOfEventAction(const G4Event* event)
 
     // fill ntuple, does not work with secondary particles
 
-    if (sampleHit->GetSecondaryAtomicNumber()[0]==-1) {
+    /*if (sampleHit->GetSecondaryAtomicNumber()[0]==-1) {
         for (size_t i = 0; i < sampleHit->GetSecondaryAtomicNumber().size(); i++) {
             if (sampleHit->GetSecondaryAtomicNumber()[i] != -1) {
                 analysisManager->FillNtupleDColumn(0, sampleHit->GetSecondaryAtomicNumber()[i]);
@@ -229,9 +349,9 @@ void B4cEventAction::EndOfEventAction(const G4Event* event)
                 analysisManager->FillNtupleDColumn(2, sampleHit->GetSecondaryTrackLengths()[i]);
                 analysisManager->FillNtupleDColumn(3, sampleHit->GetSecondaryDepositedEnergy()[i]);            }
         }
-    }
+    }*/
     //analysisManager->FillNtupleDColumn(3, generatorPosition[0]);
     //analysisManager->FillNtupleDColumn(4, generatorPosition[1]);
 
-    analysisManager->AddNtupleRow();
+    //analysisManager->AddNtupleRow();
 }  
