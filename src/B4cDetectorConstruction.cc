@@ -74,7 +74,7 @@ void B4cDetectorConstruction::DefineMaterials()
     G4Element* elH = new G4Element("Hydrogen", "H", z=1., a=1.01*g/mole);
     G4Element* elO = new G4Element("Oxygen", "O", z=8., a=16.00*g/mole);
     //define material
-    G4Material* matCR39 = new G4Material("CR39", density=1.15*g/cm3, 3);
+    G4Material* matCR39 = new G4Material("CR39", density=1.30*g/cm3, 3);
     matCR39->AddElement(elC, 12);
     matCR39->AddElement(elH, 18);
     matCR39->AddElement(elO, 7);
