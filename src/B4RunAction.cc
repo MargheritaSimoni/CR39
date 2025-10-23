@@ -205,7 +205,7 @@ analysisManager->SetH1YAxisTitle(6, "Counts");
 
 B4RunAction::~B4RunAction()
 {
-    delete G4AnalysisManager::Instance();
+    //delete G4AnalysisManager::Instance();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -217,7 +217,8 @@ void B4RunAction::BeginOfRunAction(const G4Run* /*run*/)
 
     // Get analysis manager
     auto analysisManager = G4AnalysisManager::Instance();
-    
+    analysisManager->SetDefaultFileType("root"); // necessary in geant4-v11.3.2 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
     // Open an output file
     //
     G4String fileName = "B4";

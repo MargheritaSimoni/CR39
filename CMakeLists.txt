@@ -13,17 +13,27 @@ project(B4c)
 #
 option(WITH_GEANT4_UIVIS "Build example with Geant4 UI and Vis drivers" ON)
 if(WITH_GEANT4_UIVIS)
-  find_package(Geant4 REQUIRED ui_all vis_all)
+    find_package(Geant4 REQUIRED ui_all vis_all)
 else()
-  find_package(Geant4 REQUIRED)
+    find_package(Geant4 REQUIRED)
 endif()
 
 #NCrystal
-execute_process( COMMAND ncrystal-config --show cmakedir
-                   OUTPUT_VARIABLE NCrystal_DIR
-                   OUTPUT_STRIP_TRAILING_WHITESPACE)
+#execute_process( COMMAND ncrystal-config --show cmakedir
+# OUTPUT_VARIABLE NCrystal_DIR
+# OUTPUT_STRIP_TRAILING_WHITESPACE)
 
+#find_package(NCrystal REQUIRED) #geant4-v11.3.2
+set(NCrystal_DIR "$ENV{HOME}/ncrystalinstall/lib/cmake/NCrystal")
 find_package(NCrystal REQUIRED)
+if(TARGET NCrystal::NCrystal)
+    set_target_properties(NCrystal::NCrystal PROPERTIES
+            IMPORTED_LOCATION "$ENV{HOME}/ncrystalinstall/lib/libNCrystal.so"
+            INTERFACE_INCLUDE_DIRECTORIES "$ENV{HOME}/ncrystalinstall/include"
+    )
+endif()
+#find_package(NCrystal REQUIRED PATHS ~/ncrystalinstall/lib/cmake/NCrystal NO_DEFAULT_PATH)
+find_package(NCrystalGeant4 REQUIRED PATHS ~/ncrystal-geant4/src/ncrystal_geant4/cmake NO_DEFAULT_PATH)
 
 #----------------------------------------------------------------------------
 # Setup Geant4 include directories and compile definitions
@@ -50,16 +60,21 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 #
 
 add_executable(exampleB4c exampleB4c.cc ${sources} ${headers})
-target_link_libraries(exampleB4c ${Geant4_LIBRARIES})
+#target_link_libraries(exampleB4c ${Geant4_LIBRARIES})
 
 #NCrystal
 #target_link_libraries( exampleB4c NCrystal::NCrystal )
-find_package(NCrystal REQUIRED COMPONENTS GEANT4BINDINGS )
-target_link_libraries(exampleB4c NCrystal::G4NCrystal)
+#find_package(NCrystal REQUIRED COMPONENTS GEANT4BINDINGS )
+#target_link_libraries(exampleB4c NCrystal::G4NCrystal) #geant4-v11.3.2
 
+target_link_libraries(exampleB4c PRIVATE
+        ${Geant4_LIBRARIES}
+        NCrystal::NCrystal
+        NCrystalGeant4::NCrystalGeant4
+)
 # Add this line to define the macro USE_GPS to use GeneralParticlaSource instead of ParticleGun
 # Define an option to enable or disable GPS support
-option(USE_GPS "Enable GPS support" ON) #to disable use : cmake -DUSE_GPS=OFF .. 
+option(USE_GPS "Enable GPS support" ON) #to disable use : cmake -DUSE_GPS=OFF ..
 
 # Check if the USE_GPS option is set to ON
 if(USE_GPS)
@@ -73,6 +88,7 @@ option(MY_MULTITHREADED "Enable Geant4 multi-threaded support" ON)
 if(MY_MULTITHREADED)
     add_definitions(-DMY_MULTITHREADED)
 endif()
+
 #----------------------------------------------------------------------------
 # Copy all scripts to the build directory, i.e. the directory in which we
 # build B4c. This is so that we can run the executable directly because it
@@ -90,6 +106,7 @@ set(EXAMPLEB4C_SCRIPTS
   vis.mac
   scriptLoop.mac
   sourceMacroMaterials.txt
+  CR39.ncmat
   )
 
 foreach(_script ${EXAMPLEB4C_SCRIPTS})
