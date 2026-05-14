@@ -95,18 +95,13 @@ endif()
 # relies on these scripts being in the current working directory.
 #
 set(EXAMPLEB4C_SCRIPTS
-  exampleB4c.out
-  exampleB4.in
-  gui.mac
-  init_vis.mac
-  plotHisto.C
-  plotNtuple.C
-  run1.mac
-  gps.mac
-  vis.mac
-  scriptLoop.mac
-  sourceMacroMaterials.txt
-  CR39.ncmat
+  macros/monoGPS.mac
+  macros/scriptLoop.mac
+  macros/init_vis.mac
+  macros/gui.mac
+  macros/vis.mac
+  data/sourceMacroMaterials.txt
+  data/CR39.ncmat
   )
 
 foreach(_script ${EXAMPLEB4C_SCRIPTS})

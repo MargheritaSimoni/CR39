@@ -96,7 +96,7 @@ void B4cDetectorConstruction::DefineMaterials()
 
     //MATERIALS DEFINED USING NCRYSTAL LIBRARIES nb: NC has a standard temperature of 293..15 instead of 273.15 og G4
     //nb.: NC takes the density from the file
-    G4Material * matCR39_NC = G4NCrystal::createMaterial("CR39.ncmat");
+    G4Material * matCR39_NC = G4NCrystal::createMaterial("data/CR39.ncmat");
     matCR39_NC->SetName("NC_CR39");
 
 
